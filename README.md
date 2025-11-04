@@ -16,7 +16,7 @@ A web-based Japanese emoticon generator and collection tool. Create custom kaomo
 
 ## Quick Start
 
-**Use online**: Visit https://mozartsempiano.github.io/kaomoji-generator/
+**Use online**: Visit http://kaomoji.mozartsempiano.com/
 
 **Local development**:
 
@@ -33,3 +33,4 @@ A web-based Japanese emoticon generator and collection tool. Create custom kaomo
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
