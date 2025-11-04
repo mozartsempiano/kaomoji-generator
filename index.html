@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="Make your custom Kaomoji or select a premade one!" />
+		<meta name="keywords" content="kaomoji, japanese, emoticons, emojis" />
+
+		<title>(*≧∀≦*) Kaomoji Generator - Japanese Emoticons</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="/assets/css/kaomoji.css" />
+
+		<style id="notification-style">
+			#copy-notification {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				background: rgba(50, 50, 50, 0.9);
+				color: var(--clr-text);
+				padding: 10px 16px;
+				border-radius: 6px;
+				font-family: var(--fonte);
+				font-size: 1em;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.3s ease, transform 0.3s ease;
+				transform: translateY(20px);
+				z-index: 1000;
+			}
+
+			#copy-notification.show {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			#copy-notification.notifError {
+				background: var(--clr-red-a40);
+				color: var(--clr-white-k);
+			}
+
+			#copy-notification.notifSuccess {
+				background: var(--clr-green-a30);
+				color: var(--clr-black-a0);
+			}
+
+			/* Preloader Styles */
+			#preloader {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: var(--clr-background);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 9999;
+				transition: opacity 0.5s ease, visibility 0.5s ease;
+			}
+
+			#preloader.hidden {
+				opacity: 0;
+				visibility: hidden;
+			}
+
+			.loader {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 21px;
+			}
+
+			.loader-kaomoji {
+				font-size: 2rem;
+				animation: bounce 1.5s ease-in-out infinite;
+				color: var(--clr-text);
+			}
+
+			.loader-text {
+				color: var(--clr-text);
+				font-family: var(--fonte);
+				font-size: 1rem;
+				opacity: 0.8;
+			}
+
+			.loader-spinner {
+				width: 32px;
+				height: 32px;
+				border: 3px solid var(--clr-gray-k);
+				border-top: 3px solid var(--clr-text);
+				border-radius: 50%;
+				animation: spin 1s linear infinite;
+			}
+
+			@keyframes bounce {
+				0%,
+				20%,
+				50%,
+				80%,
+				100% {
+					transform: translateY(0);
+				}
+				40% {
+					transform: translateY(-10px);
+				}
+				60% {
+					transform: translateY(-5px);
+				}
+			}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Preloader -->
+		<div id="preloader">
+			<div class="loader">
+				<div class="loader-kaomoji">d(〃≧ω≦〃)b</div>
+				<div class="loader-text">Loading...</div>
+				<div class="loader-spinner"></div>
+			</div>
+		</div>
+
+		<div id="container-kaomoji" class="fade-in">
+			<div id="content">
+				<div id="left-col">
+					<div id="title">
+						<h1>Kaomoji</h1>
+						<h1 style="font-size: clamp(2rem, 6em, 6em)">顔文字</h1>
+						<h2 class="subtitle">Japanese Emoticons</h2>
+					</div>
+
+					<div id="filters">
+						<button id="btn-filter" aria-haspopup="dialog" aria-expanded="false" aria-controls="popup-filters" type="button">
+							<span class="typography-title-sm">Filter</span>
+							<svg viewBox="0 0 24 24" role="presentation" aria-hidden="true">
+								<path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" style="fill: currentColor"></path>
+							</svg>
+						</button>
+
+						<button id="btn-clear" type="button" aria-disabled="true" disabled>Clear filters</button>
+
+						<div id="popup-filters" role="region" aria-hidden="true" aria-labelledby="btn-filter" hidden>
+							<div id="popup-filters-list" data-e2eid="category-filter"></div>
+						</div>
+					</div>
+
+					<img src="/assets/img/halftone.png" class="tilt2" />
+				</div>
+				<div id="right-col">
+					<div id="kaomoji-generator">
+						<h2>Kaomoji Generator</h2>
+						<div id="generator-inputs"></div>
+						<div id="kaomoji-preview">
+							<pre title="Click to copy"></pre>
+							<button id="generate-random">Random</button>
+							<!-- <button id="copy-generated">Copy Kaomoji</button> -->
+						</div>
+					</div>
+
+					<div id="kaomoji-list"></div>
+				</div>
+			</div>
+
+			<div id="copy-notification"></div>
+
+			<footer>©2025 <a href="https://mozartsempiano.com/">mozartsempiano</a> / <a href="https://mozartsempiano.com/doar">Donate</a></footer>
+		</div>
+
+		<script type="module" src="/assets/js/kaomoji.js"></script>
+		<script>
+			const kaomojis = [
+				{ text: "(＾▽＾)", tags: ["joy"] },
+				{ text: "(╯°□°)╯︵ ┻━┻", tags: ["anger"] },
+				{ text: "(¬‿¬)", tags: ["cool", "smugness"] },
+				{ text: "(✿◠‿◠)", tags: ["joy"] },
+				{ text: "(ಥ﹏ಥ)", tags: ["sadness"] },
+				{ text: "૮ ◞ ﻌ ◟ ა", tags: ["sadness", "dogs", "animals"] },
+				{ text: "( ͡° ͜ʖ ͡°)", tags: ["smugness"] },
+				{ text: "ꉂ(˵˃ ᗜ ˂˵)", tags: ["joy"] },
+				{ text: "(˶ᵔ ᵕ ᵔ˶)", tags: ["joy"] },
+				{ text: "(╥﹏╥)", tags: ["sadness"] },
+				{ text: "ദ്ദി ˉ͈̀꒳ˉ͈́ )✧", tags: ["joy", "agree"] },
+				{ text: "(˶˃ ᵕ ˂˶)", tags: ["joy"] },
+				{ text: "◝(ᵔᗜᵔ)◜", tags: ["joy"] },
+				{ text: "♡⸜(˃ ᵕ ˂ )⸝", tags: ["love"] },
+				{ text: "ദ്ദി(ᵔᗜᵔ)", tags: ["joy", "agree"] },
+				{ text: "ᕙ(  •̀ ᗜ •́  )ᕗ", tags: ["smugness"] },
+				{ text: "(˶ˆ꒳ˆ˵)", tags: ["joy"] },
+				{ text: "(¬_¬')", tags: ["dissatisfaction"] },
+				{ text: "૮꒰˶ᵔ ᵕ ᵔ˶꒱ა", tags: ["joy", "sheep", "animals"] },
+				{ text: "( ≧ᗜ≦)", tags: ["joy"] },
+				{ text: "( ˘͈ ᵕ ˘͈♡)", tags: ["love"] },
+				{ text: "∘ ∘ ∘ ( °ヮ° ) ?", tags: ["confusion"] },
+				{ text: "(´｡• ᵕ •｡`)", tags: ["joy"] },
+				{ text: "(´･_･`)", tags: ["sadness", "confusion"] },
+				{ text: "(´▽`ʃ♡ƪ)", tags: ["love"] },
+				{ text: "(✧ω✧)", tags: ["joy"] },
+				{ text: "(o´∀`o)", tags: ["joy"] },
+				{ text: "(oT-T)尸", tags: ["sadness"] },
+				{ text: "૮₍ ˃ ⤙ ˂ ₎ა", tags: ["dissatisfaction", "dogs", "animals"] },
+				{ text: "; (◞‸◟)", tags: ["sadness", "dissatisfaction"] },
+				{ text: "( ∩´͈ ᐜ `͈∩)", tags: ["embarrassment"] },
+				{ text: "(⊙ _ ⊙ )", tags: ["surprise"] },
+				{ text: "''( – ⌓ – )", tags: ["confusion", "indifference"] },
+				{ text: "( ˘ ³˘ )♡", tags: ["love", "kiss"] },
+				{ text: "( • ᴗ - ) ✧", tags: ["wink"] },
+				{ text: "(˶˘ ³˘(´͈ ᵕ `͈˶)", tags: ["love", "kiss"] },
+				{ text: "⸜(⸝⸝⸝´꒳`⸝⸝⸝)⸝", tags: ["joy"] },
+				{ text: "o(≧▽≦)o", tags: ["joy"] },
+				{ text: "(*≧ω≦*)", tags: ["joy"] },
+				{ text: "(⁀ᗢ⁀)", tags: ["joy"] },
+				{ text: "o(>ω<)o", tags: ["joy"] },
+				{ text: "(≧◡≦) ♡", tags: ["love"] },
+				{ text: "Σ>―(〃°ω°〃)♡→", tags: ["love"] },
+				{ text: "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)", tags: ["embarrassment"] },
+				{ text: "(っ´ω`)ﾉ(╥ω╥)", tags: ["compassion"] },
+				{ text: "(ᗒᗣᗕ)՞", tags: ["dissatisfaction"] },
+				{ text: "(＞ｍ＜)", tags: ["dissatisfaction"] },
+				{ text: "(ﾉಥ益ಥ)ﾉ", tags: ["anger"] },
+				{ text: "୧((#Φ益Φ#))୨", tags: ["anger"] },
+				{ text: "٩(ఠ益ఠ)۶", tags: ["anger"] },
+				{ text: "( ; ω ; )", tags: ["sadness"] },
+				{ text: "(｡T ω T｡)", tags: ["sadness"] },
+				{ text: "(╥﹏╥)", tags: ["sadness"] },
+				{ text: "(╥_╥)", tags: ["sadness"] },
+				{ text: ".·°՞(ᗒᗣᗕ)՞°·.", tags: ["sadness"] },
+				{ text: "(╯︵╰,)", tags: ["sadness"] },
+				{ text: "q(╥﹏╥)p", tags: ["sadness"] },
+				{ text: "o(TヘTo)", tags: ["sadness"] },
+				{ text: "(｡╯︵╰｡)", tags: ["sadness"] },
+				{ text: "(×﹏×)⌒☆", tags: ["pain"] },
+				{ text: "(˶°ㅁ°)!!", tags: ["surprise", "fear"] },
+				{ text: "Σ(°ロ°)!!!", tags: ["surprise", "fear"] },
+				{ text: "∑(O_O;)", tags: ["surprise"] },
+				{ text: "▓▒░(°◡°)░▒▓", tags: ["fear"] },
+				{ text: "(￣▽￣)ノ", tags: ["wave"] },
+				{ text: "ヾ(☆▽☆)", tags: ["wave"] },
+				{ text: "( ◡‿◡ )", tags: ["joy"] },
+				{ text: "(◞︵◟)", tags: ["sadness"] },
+				{ text: "(╬ಠ益ಠ)", tags: ["anger"] },
+				{ text: "ʕ◉ᴥ◉ʔ", tags: ["bears", "animals"] },
+				{ text: "ʕ≧㉨≦ʔ", tags: ["bears", "animals"] },
+				{ text: "(*≧∀≦*)", tags: ["joy"] },
+				{ text: "(*´ω ` *)", tags: ["joy"] },
+				{ text: "^ↀᴥↀ^", tags: ["cats", "animals"] },
+				{ text: "(=ↀωↀ=)", tags: ["cats", "animals"] },
+				{ text: "(─‿‿─)", tags: ["joy", "silly"] },
+				{ text: "＼(＾▽＾)／", tags: ["joy"] },
+				{ text: "(˘∀˘)/(μ‿μ) ❤", tags: ["love"] },
+				{ text: "(❤ω❤)", tags: ["love"] },
+				{ text: "♡( ◡‿◡ )", tags: ["love"] },
+				{ text: "(´,,•ω•,,)♡", tags: ["love"] },
+				{ text: "(⁄ ⁄•⁄ω⁄•⁄ ⁄)", tags: ["embarrassment"] },
+				{ text: "(„ಡωಡ„)", tags: ["embarrassment", "silly"] },
+				{ text: "(ノ*°▽°*)", tags: ["embarrassment"] },
+				{ text: "ρ(- ω -、)ヾ(￣ω￣; )", tags: ["compassion"] },
+				{ text: "ヽ(￣ω￣(。。 )ゝ", tags: ["compassion"] },
+				{ text: "凸(￣ヘ￣)", tags: ["dissatisfaction"] },
+				{ text: "(￣ ￣|||)", tags: ["dissatisfaction"] },
+				{ text: "(￣︿￣)", tags: ["indifference"] },
+				{ text: "(⇀‸↼‶)", tags: ["dissatisfaction"] },
+				{ text: "。゜゜(´Ｏ`) ゜゜。", tags: ["sadness"] },
+				{ text: "（ｉДｉ）", tags: ["sadness"] },
+				{ text: "( ˘▽˘)っ♨", tags: ["food"] },
+				{ text: "(　´∀`)つ―●○◎-", tags: ["food"] },
+				{ text: "૮₍ ´˶• ᴥ •˶₎ა", tags: ["dogs", "animals"] },
+				{ text: "૮₍ ˶ᵔ ᵕ ᵔ˶ ₎ა", tags: ["joy", "dogs", "animals"] },
+				{ text: "(⸝⸝ ◜~◝ ⸝⸝)", tags: ["embarrassment"] },
+				{ text: "(,,ᴗ  ̫ᴗ,,)ꕤ*.ﾟ", tags: ["embarrassment"] },
+				{ text: "( ੭ ˙ᗜ˙ )੭", tags: ["joy"] },
+				{ text: "(●´ϖ`●)", tags: ["silly"] },
+				{ text: "o(〃＾▽＾〃)o", tags: ["joy"] },
+				{ text: "o(⸝⸝ºᗜº⸝⸝)>♡", tags: ["love"] },
+				{ text: "¯\\_(ᐛ )_/¯", tags: ["silly"] },
+				{ text: "♡(◍•ㅅ•◍)♡", tags: ["love"] },
+				{ text: "≽^•⩊•^≼", tags: ["cats", "animals"] },
+				{ text: "≽^˶∩⩊∩˶^≼", tags: ["embarrassment", "cats", "animals"] },
+				{ text: "/ᐠ• ˕ •マ", tags: ["cats", "animals"] },
+				{ text: "(ᓀ‸ᓂ)", tags: ["anger"] },
+				{ text: "( = ⩊ = )", tags: ["embarrassment"] },
+				{ text: "(๑>◡<๑)", tags: ["embarrassment", "joy"] },
+				{ text: "(ᗒ⩊ᗕ)", tags: ["embarrassment", "joy"] },
+				{ text: "(0＾ー＾0）", tags: ["joy"] },
+				{ text: "(ಥ ͜ʖಥ)", tags: ["sadness", "silly"] },
+				{ text: "(╬￣皿￣)", tags: ["anger"] },
+				{ text: "(@’ω’@)", tags: ["embarrassment"] },
+				{ text: "٩(๛ ˘ ³˘)۶❤", tags: ["love"] },
+				{ text: "(=^･ω･^=)", tags: ["cats", "animals"] },
+				{ text: "ʕ – ᴥ – ʔ", tags: ["cool", "bears", "animals"] },
+				{ text: "ʕ ꈍᴥꈍʔ", tags: ["bears", "animals"] },
+				{ text: "( ͡° ᴥ ͡° ʋ)", tags: ["dogs", "animals"] },
+				{ text: "υ´• ﻌ •`υ", tags: ["dogs", "animals"] },
+				{ text: "૮ ꈍﻌ ꈍა♥(˘ ε˘ U)", tags: ["love", "dogs", "animals"] },
+				{ text: "( ⚆_⚆ )?", tags: ["confusion"] },
+				{ text: "(｡• . •｡)??", tags: ["confusion"] },
+				{ text: "(；￣Д￣)？", tags: ["confusion"] },
+				/*{
+          text: `.           .🌷🌸🌷🌸
+          🌸🌷🌸🌷🌸
+        Λ 🌷🌸🌷🌸🌷
+      ( ˘ ᵕ ˘  🌷🌸🌷
+       ヽ  つ＼     ／
+          UU   / 🎀 \\`,
+          tags: ["multiple lines", "flowers", "cute"],
+        },*/
+			];
+
+			let sortOrder = "desc"; // "asc" or "desc"
+
+			const list = document.getElementById("kaomoji-list");
+			const filtersContainer = document.getElementById("filters");
+
+			/* const allTags = ["All", ...new Set(kaomojis.flatMap((k) => k.tags))]; */
+			const allTags = ["All", ...Array.from(new Set(kaomojis.flatMap((k) => k.tags))).sort((a, b) => a.localeCompare(b))];
+
+			const activeFilters = new Set();
+
+			// Updates URL according to active filters
+			function updateURL() {
+				if (activeFilters.size === 0) {
+					history.replaceState(null, "", window.location.pathname);
+				} else {
+					const tagsParam = Array.from(activeFilters).join(",");
+					history.replaceState(null, "", `?tags=${encodeURIComponent(tagsParam)}`);
+				}
+			}
+
+			// Initializes filters from URL
+			function loadFiltersFromURL() {
+				const params = new URLSearchParams(window.location.search);
+				const tagsParam = params.get("tags");
+				if (tagsParam) {
+					tagsParam.split(",").forEach((tag) => {
+						if (allTags.includes(tag)) activeFilters.add(tag);
+					});
+				}
+			}
+
+			// Updates the kaomoji list and button/tag classes
+			function updateFilters() {
+				const filtered = activeFilters.size === 0 ? kaomojis : kaomojis.filter((k) => Array.from(activeFilters).every((f) => k.tags.includes(f)));
+
+				renderKaomojis(filtered);
+
+				// Updates top buttons
+				filtersContainer.querySelectorAll("button").forEach((btn) => {
+					const tag = btn.textContent;
+					btn.classList.toggle("selected", activeFilters.has(tag));
+				});
+
+				// enable/disable the clear button under Filter
+				if (btnClear) {
+					if (activeFilters.size > 0) {
+						btnClear.removeAttribute("disabled");
+						btnClear.setAttribute("aria-disabled", "false");
+					} else {
+						btnClear.setAttribute("disabled", "true");
+						btnClear.setAttribute("aria-disabled", "true");
+					}
+				}
+
+				updateURL();
+				// also refresh popup tag selected state if present
+				if (typeof renderPopupTags === "function") renderPopupTags();
+			}
+
+			// Build a compact filter UI: a single "Filter" button that opens a popup with all tags
+			const btnFilter = document.getElementById("btn-filter");
+			const popupFilters = document.getElementById("popup-filters");
+			const popupList = document.getElementById("popup-filters-list");
+			const btnClear = document.getElementById("btn-clear");
+
+			function openPopup() {
+				popupFilters.hidden = false;
+				popupFilters.setAttribute("aria-hidden", "false");
+				popupFilters.setAttribute("aria-modal", "true");
+				btnFilter.setAttribute("aria-expanded", "true");
+				// focus first interactive element (the first checkbox row)
+				const firstRow = popupList.querySelector("[role='checkbox']");
+				if (firstRow) firstRow.focus();
+			}
+
+			function closePopup() {
+				popupFilters.hidden = true;
+				popupFilters.setAttribute("aria-hidden", "true");
+				popupFilters.removeAttribute("aria-modal");
+				btnFilter.setAttribute("aria-expanded", "false");
+				btnFilter.focus();
+			}
+
+			btnFilter.addEventListener("click", (e) => {
+				if (popupFilters.hidden) openPopup();
+				else closePopup();
+			});
+
+			if (btnClear) {
+				btnClear.addEventListener("click", () => {
+					if (activeFilters.size === 0) return; // no-op when disabled
+					activeFilters.clear();
+					updateFilters();
+					// keep popup open and focus first row
+					const firstRow = popupList.querySelector("[role='checkbox']");
+					if (firstRow) firstRow.focus();
+				});
+			}
+
+			// close popup on ESC
+			document.addEventListener("keydown", (e) => {
+				if (e.key === "Escape" && !popupFilters.hidden) closePopup();
+			});
+
+			// close popup when clicking outside of it but ignore clicks on the filter and clear buttons
+			document.addEventListener("click", (e) => {
+				if (popupFilters.hidden) return;
+				const target = e.target;
+				if (popupFilters.contains(target)) return; // inside popup
+				if (btnFilter && (btnFilter === target || btnFilter.contains(target))) return; // clicked Filter
+				if (btnClear && (btnClear === target || btnClear.contains(target))) return; // clicked clear
+				// otherwise close
+				closePopup();
+			});
+
+			// Basic focus trap: keep Tab/Shift+Tab within popup when open
+			document.addEventListener("keydown", (e) => {
+				if (e.key !== "Tab") return;
+				if (popupFilters.hidden) return;
+
+				const focusable = popupFilters.querySelectorAll("[role='checkbox'], button:not([disabled])");
+				if (!focusable.length) return;
+				const first = focusable[0];
+				const last = focusable[focusable.length - 1];
+
+				if (e.shiftKey) {
+					if (document.activeElement === first) {
+						e.preventDefault();
+						last.focus();
+					}
+				} else {
+					if (document.activeElement === last) {
+						e.preventDefault();
+						first.focus();
+					}
+				}
+			});
+
+			// Render popup as a list of checkbox-like rows with counts
+			function renderPopupTags() {
+				popupList.innerHTML = "";
+
+				// compute counts per tag
+				const counts = {};
+				allTags.forEach((t) => (counts[t] = 0));
+				kaomojis.forEach((k) =>
+					k.tags.forEach((t) => {
+						if (counts[t] !== undefined) counts[t]++;
+					})
+				);
+
+				allTags.forEach((tag) => {
+					const row = document.createElement("div");
+					row.className = "popup-item";
+					row.tabIndex = 0;
+					// treat "All" specially by showing total
+					const isAll = tag === "All";
+					const checked = isAll ? activeFilters.size === 0 : activeFilters.has(tag);
+					row.setAttribute("role", "checkbox");
+					row.setAttribute("aria-checked", checked ? "true" : "false");
+
+					// checkbox square
+					const cb = document.createElement("span");
+					cb.className = "popup-checkbox";
+					cb.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg>`;
+
+					const label = document.createElement("span");
+					label.className = "popup-label";
+					label.textContent = tag;
+
+					const countSpan = document.createElement("span");
+					countSpan.className = "popup-count";
+					countSpan.textContent = isAll ? `(${kaomojis.length})` : `(${counts[tag] || 0})`;
+
+					row.appendChild(cb);
+					row.appendChild(label);
+					row.appendChild(countSpan);
+
+					// click/keyboard toggles
+					function toggle() {
+						if (isAll) {
+							activeFilters.clear();
+						} else {
+							if (activeFilters.has(tag)) activeFilters.delete(tag);
+							else activeFilters.add(tag);
+						}
+						updateFilters();
+						// re-render rows to update aria-checked and counts
+						renderPopupTags();
+					}
+
+					row.addEventListener("click", (e) => {
+						// prevent the click from bubbling to document: we re-render the popup synchronously
+						// which may remove the original target from the DOM and cause the global
+						// outside-click handler to close the popup. Stopping propagation here prevents that.
+						e.stopPropagation();
+						toggle();
+					});
+
+					row.addEventListener("keydown", (e) => {
+						if (e.key === " " || e.key === "Enter") {
+							e.preventDefault();
+							e.stopPropagation();
+							toggle();
+						}
+						if (e.key === "Escape") {
+							e.stopPropagation();
+							closePopup();
+						}
+					});
+
+					popupList.appendChild(row);
+				});
+			}
+
+			renderPopupTags();
+
+			// Notification text constants
+			const NOTIFICATION_TEXTS = {
+				SUCCESS: "Copied! ദ്ദി ˉ͈̀꒳ˉ͈́ )✧",
+				ERROR: "Error copying! Σ(°ロ°)!!!",
+			};
+
+			// Renders kaomojis and tags below each one
+			function renderKaomojis(filteredList) {
+				list.innerHTML = "";
+
+				// Gets the notification div (or creates if it doesn't exist)
+				let copyNotification = document.getElementById("copy-notification");
+				if (!copyNotification) {
+					copyNotification = document.createElement("div");
+					copyNotification.id = "copy-notification";
+					copyNotification.textContent = NOTIFICATION_TEXTS.SUCCESS;
+					document.body.appendChild(copyNotification);
+				}
+
+				const timeout = 3000; // notification duration
+				let copyTimeout; // controls current timeout
+
+				// --- applies global sorting ---
+				let sorted = [...filteredList];
+				if (sortOrder === "desc") sorted.reverse();
+
+				sorted.forEach((k) => {
+					const container = document.createElement("div");
+					container.classList.add("kaomoji-item");
+
+					const pre = document.createElement("pre");
+					pre.textContent = k.text;
+					pre.style.cursor = "pointer";
+
+					container.appendChild(pre);
+
+					const tagsDiv = document.createElement("div");
+					tagsDiv.classList.add("tags");
+
+					k.tags.forEach((t) => {
+						const span = document.createElement("span");
+						span.textContent = t;
+						span.style.cursor = "pointer";
+						span.style.marginRight = "6px";
+
+						span.addEventListener("click", () => {
+							activeFilters.has(t) ? activeFilters.delete(t) : activeFilters.add(t);
+							updateFilters();
+						});
+
+						span.classList.toggle("selected", activeFilters.has(t));
+						tagsDiv.appendChild(span);
+					});
+
+					container.appendChild(tagsDiv);
+					list.appendChild(container);
+				});
+
+				// --- Delegation: ensures it works for dynamic <pre> elements ---
+				const root = document.getElementById("container-kaomoji");
+				if (root && !root.dataset.clipboardInit) {
+					root.addEventListener("click", async (e) => {
+						const pre = e.target.closest("pre");
+						if (!pre || !root.contains(pre)) return;
+
+						const textToCopy = pre.textContent;
+
+						// clears previous timeout
+						if (copyTimeout) clearTimeout(copyTimeout);
+
+						// Reset notification classes
+						copyNotification.className = "";
+
+						try {
+							await navigator.clipboard.writeText(textToCopy);
+							copyNotification.textContent = NOTIFICATION_TEXTS.SUCCESS;
+							copyNotification.classList.add("show", "notifSuccess");
+							playCopySuccess(); // Plays success sound
+						} catch (err) {
+							console.error("Error copying (clipboard.writeText):", err);
+
+							// old fallback
+							try {
+								const textarea = document.createElement("textarea");
+								textarea.value = textToCopy;
+								textarea.setAttribute("readonly", "");
+								textarea.style.position = "absolute";
+								textarea.style.left = "-9999px";
+								document.body.appendChild(textarea);
+
+								textarea.select();
+								textarea.setSelectionRange(0, textarea.value.length);
+
+								const successful = document.execCommand("copy");
+								document.body.removeChild(textarea);
+
+								if (successful) {
+									copyNotification.textContent = NOTIFICATION_TEXTS.SUCCESS;
+									copyNotification.classList.add("show", "notifSuccess");
+									playCopySuccess(); // Plays success sound in fallback too
+								} else {
+									copyNotification.textContent = NOTIFICATION_TEXTS.ERROR;
+									copyNotification.classList.add("show", "notifError");
+									playCopyFail(); // Plays error sound in fallback
+								}
+							} catch (err2) {
+								console.error("Fallback failed:", err2);
+								copyNotification.textContent = NOTIFICATION_TEXTS.ERROR;
+								copyNotification.classList.add("show", "notifError");
+								playCopyFail(); // Plays error sound when everything fails
+							}
+						}
+
+						// restarts timeout
+						copyTimeout = setTimeout(() => {
+							copyNotification.classList.remove("show", "notifSuccess", "notifError");
+							copyTimeout = null;
+						}, timeout);
+					});
+
+					root.dataset.clipboardInit = "1";
+				}
+			}
+
+			loadFiltersFromURL();
+			updateFilters();
+		</script>
+
+		<script>
+			// === KAOMOJI GENERATOR ===
+
+			const options = {
+				extraLeft: ["", "✧", "∘ ∘ ∘", "ꉂ", "?", "''", "Σ>―", "!!!", "Σ", "☆⌒", ".·°՞", "♡ ", ".ﾟ*ꕤ"],
+				armLeft: ["", "ヽ", "◝", "╭", "o", "乁", "q", "୧", "ᕙ", "ദ്ദി", "d", "ヾ", "⸜", "凸", "ʚ"],
+				faceLeft: ["", "(", "((", "(*", "(˶", "(♡", "(´｡", "(´", "(o", "(◍", "૮ ", "૮₍ ", "૮꒰", "ʕ", "(#", "(=", "(⸝⸝ ", "(„", "(〃", "༼ "],
+				eyeLeft: [
+					"^",
+					"◠",
+					"ᵔ",
+					"ˆ",
+					"˘͈",
+					"ˉ͈̀",
+					"￣",
+					">",
+					"＞",
+					"ᗒ",
+					"≧",
+					"°",
+					"•",
+					"•̀",
+					"･",
+					"¬",
+					"–",
+					"⊙",
+					"O",
+					"ಠ",
+					"ಥ",
+					"ఠ",
+					"◞",
+					"╯",
+					"´",
+					"T",
+					"╥",
+					";",
+					"ｉ",
+					"Φ",
+					"ↀ",
+					"☆",
+					"✧",
+					"×",
+					" ͡°",
+					"ꈍ",
+					"♥",
+					"♡",
+					"ᑌ",
+					"＠",
+					"͡U",
+					"ò",
+					"⋋",
+					"ᓀ",
+					"ට",
+				],
+				mouth: [
+					"‿",
+					"ᵕ",
+					"ᴗ",
+					"◡",
+					"ｖ",
+					"꒳",
+					"ω",
+					"‿‿",
+					"▽",
+					"ᗜ",
+					"ᗢ",
+					"ヮ",
+					"∀",
+					"з",
+					"3",
+					"³",
+					"ᓀ",
+					"︵",
+					"︿",
+					"ヘ",
+					"‸",
+					"ㅅ",
+					"⌓",
+					"ᗣ",
+					"Δ",
+					"_",
+					"-",
+					"﹏",
+					"m",
+					"×",
+					"⤙",
+					"o",
+					"□",
+					"ロ",
+					"Д",
+					"益",
+					" ͜ʖ",
+					"ϖ",
+					"ᴥ",
+					"ܫ",
+					"(ｪ)",
+					"㉨",
+				],
+				eyeRight: [
+					"^",
+					"◠",
+					"ᵔ",
+					"ˆ",
+					"˘͈",
+					"ˉ͈́",
+					"￣",
+					"<",
+					"＜",
+					"ᗕ",
+					"≦",
+					"°",
+					"•",
+					"•́",
+					"･",
+					"¬",
+					"–",
+					"⊙",
+					"O",
+					"ಠ",
+					"ಥ",
+					"ఠ",
+					"◟",
+					"╰",
+					"`",
+					"T",
+					"╥",
+					";",
+					"ｉ",
+					"Φ",
+					"ↀ",
+					"☆",
+					"✧",
+					"×",
+					" ͡°",
+					"ꈍ",
+					"♥",
+					"♡",
+					"ᑌ",
+					"＠",
+					"͡U",
+					"ó",
+					"⋌",
+					"ᓂ",
+					"ට",
+				],
+				faceRight: ["", ")", "))", "*)", "˶)", "♡)", "｡`)", "`)", "o)", "◍)", " ა", " ₎ა", "꒱ა", "ʔ", "#)", "=)", " ⸝⸝)", "„)", "〃)", " ༽"],
+				armRight: ["", "ﾉ", "◜", "╮", "o", "ㄏ", "p", "୨", "ᕗ", "ദ്ദി", "b", "ヾ", "⸝", "凸", "ɞ"],
+				extraRight: ["", "✧", "∘ ∘ ∘", "ꉂ", "?", "''", "♡→", "!!!", "Σ", "⌒☆", "՞°·.", " ♡", "ꕤ*.ﾟ"],
+			};
+
+			const inputsContainer = document.getElementById("generator-inputs");
+			const preview = document.querySelector("#kaomoji-preview pre");
+			/* const btnCopy = document.getElementById("copy-generated"); */
+
+			const parts = {}; // stores select references
+
+			// Creates selects
+			Object.entries(options).forEach(([part, values]) => {
+				const label = document.createElement("label");
+				label.textContent = part + ": ";
+
+				const select = document.createElement("select");
+				values.forEach((val, index) => {
+					const option = document.createElement("option");
+					option.value = val;
+					option.textContent = index + 1 + ". " + (val || "(empty)"); // number for visualization
+					select.appendChild(option);
+				});
+
+				parts[part] = select;
+				label.appendChild(select);
+				inputsContainer.appendChild(label);
+				inputsContainer.appendChild(document.createElement("br"));
+			});
+
+			// Updates preview according to selection
+			function updateKaomoji() {
+				const kaomoji = `${parts.extraLeft.value}${parts.armLeft.value}${parts.faceLeft.value}${parts.eyeLeft.value}${parts.mouth.value}${parts.eyeRight.value}${parts.faceRight.value}${parts.armRight.value}${parts.extraRight.value}`;
+				preview.textContent = kaomoji;
+			}
+
+			// Observes changes in selects
+			Object.values(parts).forEach((sel) => sel.addEventListener("change", updateKaomoji));
+
+			// Copy
+			/* btnCopy.addEventListener("click", () => {
+              navigator.clipboard.writeText(preview.textContent).then(() => {
+                btnCopy.textContent = "Copied!";
+                setTimeout(() => (btnCopy.textContent = "Copy Kaomoji"), 2000);
+              });
+            }); */
+
+			const btnRandom = document.getElementById("generate-random");
+			let slotMachineActive = true;
+
+			const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+			let tickBuffer = null;
+			let copySuccessBuffer = null;
+			let copyFailBuffer = null;
+
+			async function loadTickBuffer(url) {
+				try {
+					const res = await fetch(url);
+					const arr = await res.arrayBuffer();
+					tickBuffer = await audioCtx.decodeAudioData(arr);
+				} catch (err) {
+					console.warn("Failed to load tick audio:", err);
+					tickBuffer = null;
+				}
+			}
+
+			async function loadCopySuccessBuffer(url) {
+				try {
+					const res = await fetch(url);
+					const arr = await res.arrayBuffer();
+					copySuccessBuffer = await audioCtx.decodeAudioData(arr);
+				} catch (err) {
+					console.warn("Failed to load copy success audio:", err);
+					copySuccessBuffer = null;
+				}
+			}
+
+			async function loadCopyFailBuffer(url) {
+				try {
+					const res = await fetch(url);
+					const arr = await res.arrayBuffer();
+					copyFailBuffer = await audioCtx.decodeAudioData(arr);
+				} catch (err) {
+					console.warn("Failed to load copy fail audio:", err);
+					copyFailBuffer = null;
+				}
+			}
+
+			loadTickBuffer("/assets/wav/random_tick.wav");
+			loadCopySuccessBuffer("/assets/wav/copy_success.wav");
+			loadCopyFailBuffer("/assets/wav/copy_fail.wav");
+
+			function playTick(volume = 0.55) {
+				if (!tickBuffer) return;
+				if (audioCtx.state === "suspended") {
+					audioCtx.resume().catch(() => {});
+				}
+
+				const src = audioCtx.createBufferSource();
+				src.buffer = tickBuffer;
+
+				const gain = audioCtx.createGain();
+				gain.gain.value = 0.0001;
+
+				src.connect(gain).connect(audioCtx.destination);
+
+				const now = audioCtx.currentTime;
+				// quick attack to smooth and avoid clicks, with short decay
+				gain.gain.setValueAtTime(0.0001, now);
+				gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.001);
+				gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+				src.start(now);
+				src.stop(now + tickBuffer.duration + 0.02);
+			}
+
+			function playCopySuccess(volume = 0.4) {
+				if (!copySuccessBuffer) return;
+				if (audioCtx.state === "suspended") {
+					audioCtx.resume().catch(() => {});
+				}
+
+				const src = audioCtx.createBufferSource();
+				src.buffer = copySuccessBuffer;
+
+				const gain = audioCtx.createGain();
+				gain.gain.value = 0.0001;
+
+				src.connect(gain).connect(audioCtx.destination);
+
+				const now = audioCtx.currentTime;
+				// smooth attack and decay for success sound
+				gain.gain.setValueAtTime(0.0001, now);
+				gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.01);
+				gain.gain.exponentialRampToValueAtTime(0.0001, now + copySuccessBuffer.duration);
+
+				src.start(now);
+				src.stop(now + copySuccessBuffer.duration + 0.02);
+			}
+
+			function playCopyFail(volume = 0.5) {
+				if (!copyFailBuffer) return;
+				if (audioCtx.state === "suspended") {
+					audioCtx.resume().catch(() => {});
+				}
+
+				const src = audioCtx.createBufferSource();
+				src.buffer = copyFailBuffer;
+
+				const gain = audioCtx.createGain();
+				gain.gain.value = 0.0001;
+
+				src.connect(gain).connect(audioCtx.destination);
+
+				const now = audioCtx.currentTime;
+				// error sound with more abrupt attack
+				gain.gain.setValueAtTime(0.0001, now);
+				gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.005);
+				gain.gain.exponentialRampToValueAtTime(0.0001, now + copyFailBuffer.duration);
+
+				src.start(now);
+				src.stop(now + copyFailBuffer.duration + 0.02);
+			}
+
+			function animateOrChange(select, targetIndex, callback) {
+				if (slotMachineActive) {
+					animatePart(select, targetIndex, callback);
+				} else {
+					select.selectedIndex = targetIndex;
+					updateKaomoji();
+					if (callback) callback();
+				}
+			}
+
+			function animatePart(select, targetIndex, callback) {
+				let current = select.selectedIndex;
+				let step = targetIndex > current ? 1 : -1;
+				let diff = Math.abs(targetIndex - current);
+				let i = 0;
+				let delay = 20;
+
+				function frame() {
+					current += step;
+					if (current < 0) current = select.options.length - 1;
+					if (current >= select.options.length) current = 0;
+
+					select.selectedIndex = current;
+					updateKaomoji();
+					playTick();
+
+					i++;
+					if (i < diff) {
+						delay += 5; // slows down
+						setTimeout(frame, delay);
+					} else {
+						select.selectedIndex = targetIndex;
+						updateKaomoji();
+						if (callback) callback();
+					}
+				}
+
+				frame();
+			}
+
+			btnRandom.addEventListener("click", () => {
+				const idxFace = Math.floor(Math.random() * options.faceLeft.length);
+				const idxEye = Math.floor(Math.random() * options.eyeLeft.length);
+				const idxMouth = Math.floor(Math.random() * options.mouth.length);
+				const idxArmLeft = Math.floor(Math.random() * options.armLeft.length);
+				const idxArmRight = Math.floor(Math.random() * options.armRight.length);
+				let idxExtraLeft = Math.floor(Math.random() * options.extraLeft.length);
+				let idxExtraRight = Math.floor(Math.random() * options.extraRight.length);
+
+				// Synchronizes if any is 7 or 11
+				if (idxExtraLeft === 6 || idxExtraRight === 6) {
+					idxExtraLeft = idxExtraRight = 6;
+				} else if (idxExtraLeft === 10 || idxExtraRight === 10) {
+					idxExtraLeft = idxExtraRight = 10;
+				}
+
+				if (slotMachineActive) {
+					// staggered animation
+					animateOrChange(parts.faceLeft, idxFace);
+					animateOrChange(parts.faceRight, idxFace);
+
+					setTimeout(() => {
+						animateOrChange(parts.eyeLeft, idxEye);
+						animateOrChange(parts.eyeRight, idxEye);
+					}, 200);
+
+					setTimeout(() => {
+						animateOrChange(parts.mouth, idxMouth);
+					}, 400);
+
+					setTimeout(() => {
+						animateOrChange(parts.armLeft, idxArmLeft);
+						animateOrChange(parts.armRight, idxArmRight);
+					}, 600);
+
+					setTimeout(() => {
+						animateOrChange(parts.extraLeft, idxExtraLeft);
+						animateOrChange(parts.extraRight, idxExtraRight);
+					}, 800);
+				} else {
+					// changes everything at once
+					parts.faceLeft.selectedIndex = idxFace;
+					parts.faceRight.selectedIndex = idxFace;
+					parts.eyeLeft.selectedIndex = idxEye;
+					parts.eyeRight.selectedIndex = idxEye;
+					parts.mouth.selectedIndex = idxMouth;
+					parts.armLeft.selectedIndex = idxArmLeft;
+					parts.armRight.selectedIndex = idxArmRight;
+					parts.extraLeft.selectedIndex = idxExtraLeft;
+					parts.extraRight.selectedIndex = idxExtraRight;
+					updateKaomoji();
+				}
+			});
+
+			updateKaomoji();
+		</script>
+
+		<script>
+			// Preloader management
+			window.addEventListener("load", function () {
+				const preloader = document.getElementById("preloader");
+				setTimeout(() => {
+					preloader.classList.add("hidden");
+					// Remove preloader from DOM after transition
+					setTimeout(() => {
+						preloader.remove();
+					}, 500);
+				}, 500); // Minimum loading time for better UX
+			});
+		</script>
+	</body>
+</html>
