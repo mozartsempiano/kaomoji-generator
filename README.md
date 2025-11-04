@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/img/halftone.png" alt="Kaomoji Generator" />
+  <img src="assets/img/halftone_405px.png" alt="Kaomoji Generator" />
 </div>
 
 # Kaomoji Generator
@@ -29,8 +29,6 @@ A web-based Japanese emoticon generator and collection tool. Create custom kaomo
 - **Generator**: Use dropdown menus to select components and click preview to copy
 - **Collection**: Click any kaomoji to copy, use Filter button for categories
 - **Tags**: Click tags below kaomojis to filter by category
-
-## Customization
 
 ## License
 
