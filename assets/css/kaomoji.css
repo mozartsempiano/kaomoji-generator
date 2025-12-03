@@ -100,21 +100,10 @@ body {
 	margin: 0 auto;
 	border-radius: 7px;
 	/* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4); */
-	background: linear-gradient(
-				var(--clr-background-a10),
-				var(--clr-background-a10)
-			)
-			padding-box,
-		linear-gradient(
-				to bottom,
-				rgba(255, 255, 255, 0.25),
-				var(--clr-background-a10)
-			)
-			border-box;
+	background: linear-gradient(var(--clr-background-a10), var(--clr-background-a10)) padding-box,
+		linear-gradient(to bottom, rgba(255, 255, 255, 0.25), var(--clr-background-a10)) border-box;
 	border: 1px solid transparent;
-	height: calc(
-		100vh - 10px - 9px - 58px
-	); /* subtrair padding e gap total (nao sei oq é o 58px mas foi necessário) */
+	height: calc(100vh - 10px - 9px - 58px); /* subtrair padding e gap total (nao sei oq é o 58px mas foi necessário) */
 }
 
 #left-col,
@@ -643,6 +632,11 @@ div#filters #popup-filters-list button:not(:first-of-type)::before,
 	width: 100%;
 }
 
+#generator-wrapper {
+	padding: 0 20px;
+	max-width: 990px;
+}
+
 #generator-inputs {
 	display: flex;
 	flex-wrap: wrap;
@@ -693,8 +687,7 @@ div#kaomoji-list div.kaomoji-item div.tags span,
 	color: var(--clr-text);
 	font-size: 1em;
 	font-family: var(--fonte);
-	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
-		background 0.2s ease;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 #filters button:not(#btn-filter):not(#btn-clear) {
@@ -797,8 +790,7 @@ div#kaomoji-generator div#kaomoji-preview button {
 
 #filters button#btn-clear,
 div#kaomoji-generator div#kaomoji-preview button {
-	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
-		filter 0.2s ease;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 	letter-spacing: 1px;
 	font-family: var(--fonte);
 	border: none;
@@ -986,5 +978,10 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 	#generator-inputs select {
 		font-size: 1.3em;
 		padding: 7px 8px;
+	}
+
+	#generator-wrapper {
+		padding: 0 20px;
+		max-width: 100%;
 	}
 }
