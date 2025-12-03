@@ -1,0 +1,10 @@
+{
+	"name": "Kaomoji Generator",
+	"short_name": "Kaomoji",
+	"description": "Kaomoji generator and collection tool.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#16151a",
+	"theme_color": "#3380e6",
+	"icons": []
+}
