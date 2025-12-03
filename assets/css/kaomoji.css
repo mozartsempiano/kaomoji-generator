@@ -69,7 +69,7 @@ body {
 	font-family: var(--fonte);
 	font-size: 14px;
 	letter-spacing: 1px;
-	background-color: var(--clr-background-a0);
+	background-color: var(--clr-background-a10);
 	color: var(--clr-text);
 }
 
@@ -99,9 +99,6 @@ body {
 	flex-direction: column;
 	margin: 0 auto;
 	border-radius: 7px;
-	/* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4); */
-	background: linear-gradient(var(--clr-background-a10), var(--clr-background-a10)) padding-box,
-		linear-gradient(to bottom, rgba(255, 255, 255, 0.25), var(--clr-background-a10)) border-box;
 	border: 1px solid transparent;
 	height: calc(100vh - 10px - 9px - 58px); /* subtrair padding e gap total (nao sei oq é o 58px mas foi necessário) */
 }
@@ -110,7 +107,8 @@ body {
 #right-col,
 #left-col-mobile {
 	padding: 31px 34px;
-	background-color: var(--clr-background-a10);
+	background: linear-gradient(var(--clr-background-a0), var(--clr-background-a0)) padding-box,
+		linear-gradient(to bottom, rgba(255, 255, 255, 0.25), var(--clr-background-a0)) border-box;
 }
 
 #left-col {
@@ -158,14 +156,14 @@ pre:hover {
 }
 
 div#kaomoji-list div.kaomoji-item pre {
-	background-color: var(--clr-background-a0);
+	background-color: var(--clr-background-a10);
 }
 
 footer {
 	width: 100%;
 	padding: 12px 0;
 	text-align: center;
-	background-color: var(--clr-background-a10);
+	background-color: var(--clr-background-a0);
 	margin-top: 16px;
 	font-size: 0.94em;
 	display: flex;
@@ -181,6 +179,7 @@ footer svg,
 footer path {
 	color: inherit;
 	fill: currentColor;
+	overflow: unset;
 }
 footer svg {
 	width: 0.94em;
@@ -405,6 +404,7 @@ div#filters #popup-filters-list button:not(:first-of-type)::before,
 
 #kaomoji-generator #kaomoji-preview pre {
 	height: 64px;
+	background-color: var(--clr-background-a10);
 }
 
 #kaomoji-generator {
@@ -612,7 +612,7 @@ div#filters #popup-filters-list button:not(:first-of-type)::before,
 	border-radius: 8px;
 	max-width: 100%;
 	/* margin: 0 auto; */
-	border: 1px solid var(--clr-background-a30);
+	border: 1px solid var(--clr-background-a20);
 	background: var(--clr-background-a0);
 	font-family: var(--fonte);
 	margin-bottom: 16px;
@@ -625,7 +625,7 @@ div#filters #popup-filters-list button:not(:first-of-type)::before,
 	margin-bottom: 24px;
 	font-size: 1.2em;
 	font-weight: 600;
-	background-color: var(--clr-background-a30);
+	background-color: var(--clr-background-a20);
 	padding: 14px;
 	border-radius: 8px 8px 0 0;
 	text-transform: uppercase;
@@ -731,7 +731,7 @@ div#kaomoji-list div.kaomoji-item div.tags span.selected,
 	padding: 10px 12px !important;
 	border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
 	border: 1px solid rgba(255, 255, 255, 0.07);
-	background: var(--clr-background-a10);
+	background: var(--clr-background-a0);
 	color: var(--clr-text);
 	cursor: pointer;
 	border-radius: 8px;
@@ -862,6 +862,7 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 		flex: unset;
 		overflow: visible !important;
 		border: 0;
+		border-radius: 0;
 	}
 
 	#right-col {
@@ -875,7 +876,7 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 	}
 
 	#left-col-mobile {
-		background-color: var(--clr-background-a0);
+		background: var(--clr-background-a0);
 		display: block;
 	}
 
