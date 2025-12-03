@@ -974,6 +974,9 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 		scrollbar-width: none; /* Firefox */
 		-ms-overflow-style: none; /* IE and Edge */
 		justify-content: flex-start;
+		overflow-x: auto;
+		overflow-y: hidden;
+		max-width: 100%;
 	}
 
 	#generator-inputs::-webkit-scrollbar {
