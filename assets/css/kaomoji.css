@@ -160,6 +160,10 @@ pre:hover {
 	border-color: var(--clr-white-k);
 }
 
+div#kaomoji-list div.kaomoji-item pre {
+	background-color: var(--clr-background-2);
+}
+
 footer {
 	width: 100%;
 	padding: 12px 0;
