@@ -43,6 +43,30 @@
 	box-sizing: border-box;
 }
 
+/* Custom Scrollbar Styling */
+/* Firefox */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--clr-background-a50) var(--clr-background-a0);
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--clr-background-a0);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--clr-background-a50);
+	border-radius: 3px;
+	transition: background-color 0.2s ease;
+}
+
 html,
 body {
 	height: 100%;
