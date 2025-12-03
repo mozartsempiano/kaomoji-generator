@@ -690,6 +690,29 @@ div#filters #popup-filters-list button:not(:first-of-type)::before,
 	height: 42px;
 }
 
+#generator-inputs {
+	flex-wrap: nowrap;
+	gap: 4px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+	justify-content: flex-start;
+	overflow-x: auto;
+	overflow-y: hidden;
+	max-width: 100%;
+	padding-bottom: 8px;
+}
+
+#generator-wrapper {
+	padding: 0 20px;
+	max-width: 100%;
+}
+
+#generator-inputs select {
+	font-size: 1.3em;
+	padding: 7px 8px;
+}
+
 #kaomoji-preview {
 	text-align: center;
 	margin-top: 10px;
@@ -701,13 +724,12 @@ div#filters #popup-filters-list button:not(:first-of-type)::before,
 }
 
 div#kaomoji-list div.kaomoji-item div.tags span,
-      /* apply these pill styles to filter tag buttons except the special Filter/Clear controls */
-      #filters button:not(#btn-filter):not(#btn-clear) {
+#filters button:not(#btn-filter):not(#btn-clear) {
 	display: inline-block;
 	margin: 2px;
 	padding: 4px 9px;
 	border-radius: 50px;
-	background: var(--clr-background-a0);
+	background: var(--clr-background-a20);
 	color: var(--clr-text);
 	font-size: 1em;
 	font-family: var(--fonte);
@@ -860,15 +882,15 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 }
 
 @media (max-width: 1024px) {
+	#content {
+		flex-direction: column;
+		padding: 0;
+	}
+
 	#container-kaomoji {
 		flex-direction: column;
 		height: auto;
 		overflow: visible;
-	}
-
-	#content {
-		flex-direction: column;
-		padding: 0;
 	}
 
 	#content,
@@ -966,6 +988,11 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 		min-height: 42px;
 	}
 
+	#kaomoji-generator h2 {
+		margin-bottom: 24px;
+		font-size: 1.4em;
+	}
+
 	#kaomoji-list {
 		justify-content: center;
 		gap: 8px;
@@ -975,38 +1002,5 @@ div#kaomoji-generator div#kaomoji-preview button:hover {
 	#filters button:not(#btn-filter):not(#btn-clear) {
 		font-size: 0.9em;
 		padding: 4px 6px;
-	}
-
-	#kaomoji-generator h2 {
-		margin-bottom: 24px;
-		font-size: 1.4em;
-	}
-
-	#generator-inputs {
-		flex-wrap: nowrap;
-		gap: 4px;
-		overflow-x: auto;
-		overflow-y: hidden;
-		-webkit-overflow-scrolling: touch;
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* IE and Edge */
-		justify-content: flex-start;
-		overflow-x: auto;
-		overflow-y: hidden;
-		max-width: 100%;
-	}
-
-	#generator-inputs::-webkit-scrollbar {
-		display: none; /* Chrome, Safari, Opera */
-	}
-
-	#generator-inputs select {
-		font-size: 1.3em;
-		padding: 7px 8px;
-	}
-
-	#generator-wrapper {
-		padding: 0 20px;
-		max-width: 100%;
 	}
 }
