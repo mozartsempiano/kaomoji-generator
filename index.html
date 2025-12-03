@@ -3,7 +3,10 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Make your custom Kaomoji or select a premade one!" />
+		<meta
+			name="description"
+			content="Make your custom Kaomoji or select a premade one!"
+		/>
 		<meta name="keywords" content="kaomoji, japanese, emoticons, emojis" />
 
 		<title>(*≧∀≦*) Kaomoji Generator - Japanese Emoticons</title>
@@ -12,113 +15,7 @@
 
 		<link rel="stylesheet" href="/assets/css/kaomoji.css" />
 
-		<style id="notification-style">
-			#copy-notification {
-				position: fixed;
-				bottom: 20px;
-				right: 20px;
-				background: rgba(50, 50, 50, 0.9);
-				color: var(--clr-text);
-				padding: 10px 16px;
-				border-radius: 6px;
-				font-family: var(--fonte);
-				font-size: 1em;
-				opacity: 0;
-				pointer-events: none;
-				transition: opacity 0.3s ease, transform 0.3s ease;
-				transform: translateY(20px);
-				z-index: 1000;
-			}
-
-			#copy-notification.show {
-				opacity: 1;
-				transform: translateY(0);
-			}
-
-			#copy-notification.notifError {
-				background: var(--clr-red-a40);
-				color: var(--clr-white-k);
-			}
-
-			#copy-notification.notifSuccess {
-				background: var(--clr-green-a30);
-				color: var(--clr-black-a0);
-			}
-
-			/* Preloader Styles */
-			#preloader {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: var(--clr-background);
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				z-index: 9999;
-				transition: opacity 0.5s ease, visibility 0.5s ease;
-			}
-
-			#preloader.hidden {
-				opacity: 0;
-				visibility: hidden;
-			}
-
-			.loader {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				gap: 21px;
-			}
-
-			.loader-kaomoji {
-				font-size: 2rem;
-				animation: bounce 1.5s ease-in-out infinite;
-				color: var(--clr-text);
-			}
-
-			.loader-text {
-				color: var(--clr-text);
-				font-family: var(--fonte);
-				font-size: 1rem;
-				opacity: 0.8;
-			}
-
-			.loader-spinner {
-				width: 32px;
-				height: 32px;
-				border: 3px solid var(--clr-gray-k);
-				border-top: 3px solid var(--clr-text);
-				border-radius: 50%;
-				animation: spin 1s linear infinite;
-			}
-
-			@keyframes bounce {
-				0%,
-				20%,
-				50%,
-				80%,
-				100% {
-					transform: translateY(0);
-				}
-				40% {
-					transform: translateY(-10px);
-				}
-				60% {
-					transform: translateY(-5px);
-				}
-			}
-
-			@keyframes spin {
-				0% {
-					transform: rotate(0deg);
-				}
-				100% {
-					transform: rotate(360deg);
-				}
-			}
-		</style>
+		<style id="notification-style"></style>
 	</head>
 
 	<body>
@@ -141,21 +38,99 @@
 					</div>
 
 					<div id="filters">
-						<button id="btn-filter" aria-haspopup="dialog" aria-expanded="false" aria-controls="popup-filters" type="button">
+						<button
+							id="btn-filter"
+							class="btn-filter"
+							aria-haspopup="dialog"
+							aria-expanded="false"
+							aria-controls="popup-filters"
+							type="button"
+						>
 							<span class="typography-title-sm">Filter</span>
 							<svg viewBox="0 0 24 24" role="presentation" aria-hidden="true">
-								<path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" style="fill: currentColor"></path>
+								<path
+									d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
+									style="fill: currentColor"
+								></path>
 							</svg>
 						</button>
 
-						<button id="btn-clear" type="button" aria-disabled="true" disabled>Clear filters</button>
+						<button
+							id="btn-clear"
+							class="btn-clear"
+							type="button"
+							aria-disabled="true"
+							disabled
+						>
+							Clear filters
+						</button>
 
-						<div id="popup-filters" role="region" aria-hidden="true" aria-labelledby="btn-filter" hidden>
-							<div id="popup-filters-list" data-e2eid="category-filter"></div>
+						<div
+							id="popup-filters"
+							class="popup-filters"
+							role="region"
+							aria-hidden="true"
+							aria-labelledby="btn-filter"
+							hidden
+						>
+							<div
+								class="popup-filters-list"
+								data-e2eid="category-filter"
+							></div>
 						</div>
 					</div>
-
 					<img src="/assets/img/halftone.png" class="tilt2" />
+				</div>
+				<div id="left-col-mobile">
+					<div id="title">
+						<h1>Kaomoji 顔文字</h1>
+					</div>
+
+					<div id="filters">
+						<button
+							id="btn-filter"
+							class="btn-filter"
+							aria-haspopup="dialog"
+							aria-expanded="false"
+							aria-controls="popup-filters"
+							type="button"
+						>
+							<span class="typography-title-sm">Filter</span>
+							<svg viewBox="0 0 24 24" role="presentation" aria-hidden="true">
+								<path
+									d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
+									style="fill: currentColor"
+								></path>
+							</svg>
+						</button>
+
+						<button
+							id="btn-clear"
+							class="btn-clear"
+							type="button"
+							aria-disabled="true"
+							disabled
+						>
+							<svg viewBox="0 0 76 76" aria-hidden="true">
+								<path
+									d="M 47.5282,42.9497L 42.5784,38L 47.5282,33.0502L 44.9497,30.4718L 40,35.4216L 35.0502,30.4718L 32.4718,33.0502L 37.4216,38L 32.4718,42.9497L 35.0502,45.5282L 40,40.5784L 44.9497,45.5282L 47.5282,42.9497 Z M 18.0147,41.5355L 26.9646,50.4854C 28.0683,51.589 29,52 31,52L 52,52C 54.7614,52 57,49.7614 57,47L 57,29C 57,26.2386 54.7614,24 52,24L 31,24C 29,24 28.0683,24.4113 26.9646,25.5149L 18.0147,34.4645C 16.0621,36.4171 16.0621,39.5829 18.0147,41.5355 Z M 31,49C 30,49 29.6048,48.8828 29.086,48.3641L 20.1361,39.4142C 19.355,38.6332 19.355,37.3669 20.1361,36.5858L 29.086,27.6362C 29.6048,27.1175 30,27 31,27.0001L 52,27.0001C 53.1046,27.0001 54,27.8955 54,29.0001L 54,47.0001C 54,48.1046 53.1046,49.0001 52,49.0001L 31,49 Z"
+								/>
+							</svg>
+						</button>
+						<div
+							id="popup-filters"
+							class="popup-filters"
+							role="region"
+							aria-hidden="true"
+							aria-labelledby="btn-filter"
+							hidden
+						>
+							<div
+								class="popup-filters-list"
+								data-e2eid="category-filter"
+							></div>
+						</div>
+					</div>
 				</div>
 				<div id="right-col">
 					<div id="kaomoji-generator">
@@ -174,9 +149,27 @@
 
 			<div id="copy-notification"></div>
 
-			<footer>©2025 <a href="https://mozartsempiano.com/">mozartsempiano</a> / <a href="https://mozartsempiano.com/doar">Donate</a></footer>
+			<footer>
+				<div>
+					<a
+						href="https://github.com/mozartsempiano/kaomoji-generator"
+						title="GitHub"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+							<path
+								fill-rule="evenodd"
+								d="M94 7399c5.523 0 10 4.59 10 10.253 0 4.529-2.862 8.371-6.833 9.728-.507.101-.687-.219-.687-.492 0-.338.012-1.442.012-2.814 0-.956-.32-1.58-.679-1.898 2.227-.254 4.567-1.121 4.567-5.059 0-1.12-.388-2.034-1.03-2.752.104-.259.447-1.302-.098-2.714 0 0-.838-.275-2.747 1.051a9.396 9.396 0 0 0-2.505-.345 9.375 9.375 0 0 0-2.503.345c-1.911-1.326-2.751-1.051-2.751-1.051-.543 1.412-.2 2.455-.097 2.714-.639.718-1.03 1.632-1.03 2.752 0 3.928 2.335 4.808 4.556 5.067-.286.256-.545.708-.635 1.371-.57.262-2.018.715-2.91-.852 0 0-.529-.985-1.533-1.057 0 0-.975-.013-.068.623 0 0 .655.315 1.11 1.5 0 0 .587 1.83 3.369 1.21.005.857.014 1.665.014 1.909 0 .271-.184.588-.683.493-3.974-1.355-6.839-5.199-6.839-9.729 0-5.663 4.478-10.253 10-10.253"
+								transform="translate(-84 -7399)"
+							/>
+						</svg>
+					</a>
+				</div>
+				<div>
+					©2025 <a href="https://mozartsempiano.com/">mozartsempiano</a> /
+					<a href="https://mozartsempiano.com/doar">Donate</a>
+				</div>
+			</footer>
 		</div>
-
 		<script type="module" src="/assets/js/kaomoji.js"></script>
 		<script>
 			const kaomojis = [
@@ -322,7 +315,12 @@
 			const filtersContainer = document.getElementById("filters");
 
 			/* const allTags = ["All", ...new Set(kaomojis.flatMap((k) => k.tags))]; */
-			const allTags = ["All", ...Array.from(new Set(kaomojis.flatMap((k) => k.tags))).sort((a, b) => a.localeCompare(b))];
+			const allTags = [
+				"All",
+				...Array.from(new Set(kaomojis.flatMap((k) => k.tags))).sort((a, b) =>
+					a.localeCompare(b)
+				),
+			];
 
 			const activeFilters = new Set();
 
@@ -332,7 +330,11 @@
 					history.replaceState(null, "", window.location.pathname);
 				} else {
 					const tagsParam = Array.from(activeFilters).join(",");
-					history.replaceState(null, "", `?tags=${encodeURIComponent(tagsParam)}`);
+					history.replaceState(
+						null,
+						"",
+						`?tags=${encodeURIComponent(tagsParam)}`
+					);
 				}
 			}
 
@@ -347,9 +349,20 @@
 				}
 			}
 
+			// Get filter button elements for both desktop and mobile
+			const btnFilters = document.querySelectorAll(".btn-filter");
+			const popupFiltersAll = document.querySelectorAll(".popup-filters");
+			const popupLists = document.querySelectorAll(".popup-filters-list");
+			const btnClears = document.querySelectorAll(".btn-clear");
+
 			// Updates the kaomoji list and button/tag classes
 			function updateFilters() {
-				const filtered = activeFilters.size === 0 ? kaomojis : kaomojis.filter((k) => Array.from(activeFilters).every((f) => k.tags.includes(f)));
+				const filtered =
+					activeFilters.size === 0
+						? kaomojis
+						: kaomojis.filter((k) =>
+								Array.from(activeFilters).every((f) => k.tags.includes(f))
+						  );
 
 				renderKaomojis(filtered);
 
@@ -359,8 +372,8 @@
 					btn.classList.toggle("selected", activeFilters.has(tag));
 				});
 
-				// enable/disable the clear button under Filter
-				if (btnClear) {
+				// enable/disable the clear buttons under Filter
+				btnClears.forEach((btnClear) => {
 					if (activeFilters.size > 0) {
 						btnClear.removeAttribute("disabled");
 						btnClear.setAttribute("aria-disabled", "false");
@@ -368,7 +381,7 @@
 						btnClear.setAttribute("disabled", "true");
 						btnClear.setAttribute("aria-disabled", "true");
 					}
-				}
+				});
 
 				updateURL();
 				// also refresh popup tag selected state if present
@@ -376,12 +389,7 @@
 			}
 
 			// Build a compact filter UI: a single "Filter" button that opens a popup with all tags
-			const btnFilter = document.getElementById("btn-filter");
-			const popupFilters = document.getElementById("popup-filters");
-			const popupList = document.getElementById("popup-filters-list");
-			const btnClear = document.getElementById("btn-clear");
-
-			function openPopup() {
+			function openPopup(popupFilters, btnFilter, popupList) {
 				popupFilters.hidden = false;
 				popupFilters.setAttribute("aria-hidden", "false");
 				popupFilters.setAttribute("aria-modal", "true");
@@ -391,7 +399,7 @@
 				if (firstRow) firstRow.focus();
 			}
 
-			function closePopup() {
+			function closePopup(popupFilters, btnFilter) {
 				popupFilters.hidden = true;
 				popupFilters.setAttribute("aria-hidden", "true");
 				popupFilters.removeAttribute("aria-modal");
@@ -399,12 +407,21 @@
 				btnFilter.focus();
 			}
 
-			btnFilter.addEventListener("click", (e) => {
-				if (popupFilters.hidden) openPopup();
-				else closePopup();
+			// Setup event listeners for both desktop and mobile filter buttons
+			btnFilters.forEach((btnFilter, index) => {
+				const popupFilters = popupFiltersAll[index];
+				const popupList = popupLists[index];
+
+				btnFilter.addEventListener("click", (e) => {
+					if (popupFilters.hidden)
+						openPopup(popupFilters, btnFilter, popupList);
+					else closePopup(popupFilters, btnFilter);
+				});
 			});
 
-			if (btnClear) {
+			// Setup event listeners for both desktop and mobile clear buttons
+			btnClears.forEach((btnClear, index) => {
+				const popupList = popupLists[index];
 				btnClear.addEventListener("click", () => {
 					if (activeFilters.size === 0) return; // no-op when disabled
 					activeFilters.clear();
@@ -413,50 +430,69 @@
 					const firstRow = popupList.querySelector("[role='checkbox']");
 					if (firstRow) firstRow.focus();
 				});
-			}
+			});
 
 			// close popup on ESC
 			document.addEventListener("keydown", (e) => {
-				if (e.key === "Escape" && !popupFilters.hidden) closePopup();
+				if (e.key === "Escape") {
+					popupFiltersAll.forEach((popupFilters, index) => {
+						if (!popupFilters.hidden)
+							closePopup(popupFilters, btnFilters[index]);
+					});
+				}
 			});
 
 			// close popup when clicking outside of it but ignore clicks on the filter and clear buttons
 			document.addEventListener("click", (e) => {
-				if (popupFilters.hidden) return;
 				const target = e.target;
-				if (popupFilters.contains(target)) return; // inside popup
-				if (btnFilter && (btnFilter === target || btnFilter.contains(target))) return; // clicked Filter
-				if (btnClear && (btnClear === target || btnClear.contains(target))) return; // clicked clear
-				// otherwise close
-				closePopup();
+				popupFiltersAll.forEach((popupFilters, index) => {
+					if (popupFilters.hidden) return;
+					if (popupFilters.contains(target)) return; // inside popup
+					const btnFilter = btnFilters[index];
+					const btnClear = btnClears[index];
+					if (btnFilter && (btnFilter === target || btnFilter.contains(target)))
+						return; // clicked Filter
+					if (btnClear && (btnClear === target || btnClear.contains(target)))
+						return; // clicked clear
+					// otherwise close
+					closePopup(popupFilters, btnFilter);
+				});
 			});
 
 			// Basic focus trap: keep Tab/Shift+Tab within popup when open
 			document.addEventListener("keydown", (e) => {
 				if (e.key !== "Tab") return;
-				if (popupFilters.hidden) return;
 
-				const focusable = popupFilters.querySelectorAll("[role='checkbox'], button:not([disabled])");
-				if (!focusable.length) return;
-				const first = focusable[0];
-				const last = focusable[focusable.length - 1];
+				popupFiltersAll.forEach((popupFilters) => {
+					if (popupFilters.hidden) return;
 
-				if (e.shiftKey) {
-					if (document.activeElement === first) {
-						e.preventDefault();
-						last.focus();
+					const focusable = popupFilters.querySelectorAll(
+						"[role='checkbox'], button:not([disabled])"
+					);
+					if (!focusable.length) return;
+					const first = focusable[0];
+					const last = focusable[focusable.length - 1];
+
+					if (e.shiftKey) {
+						if (document.activeElement === first) {
+							e.preventDefault();
+							last.focus();
+						}
+					} else {
+						if (document.activeElement === last) {
+							e.preventDefault();
+							first.focus();
+						}
 					}
-				} else {
-					if (document.activeElement === last) {
-						e.preventDefault();
-						first.focus();
-					}
-				}
+				});
 			});
 
 			// Render popup as a list of checkbox-like rows with counts
 			function renderPopupTags() {
-				popupList.innerHTML = "";
+				// Clear all popup lists
+				popupLists.forEach((popupList) => {
+					popupList.innerHTML = "";
+				});
 
 				// compute counts per tag
 				const counts = {};
@@ -468,66 +504,78 @@
 				);
 
 				allTags.forEach((tag) => {
-					const row = document.createElement("div");
-					row.className = "popup-item";
-					row.tabIndex = 0;
-					// treat "All" specially by showing total
-					const isAll = tag === "All";
-					const checked = isAll ? activeFilters.size === 0 : activeFilters.has(tag);
-					row.setAttribute("role", "checkbox");
-					row.setAttribute("aria-checked", checked ? "true" : "false");
+					// Create row for each popup list
+					popupLists.forEach((popupList) => {
+						const row = document.createElement("div");
+						row.className = "popup-item";
+						row.tabIndex = 0;
+						// treat "All" specially by showing total
+						const isAll = tag === "All";
+						const checked = isAll
+							? activeFilters.size === 0
+							: activeFilters.has(tag);
+						row.setAttribute("role", "checkbox");
+						row.setAttribute("aria-checked", checked ? "true" : "false");
 
-					// checkbox square
-					const cb = document.createElement("span");
-					cb.className = "popup-checkbox";
-					cb.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg>`;
+						// checkbox square
+						const cb = document.createElement("span");
+						cb.className = "popup-checkbox";
+						cb.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg>`;
 
-					const label = document.createElement("span");
-					label.className = "popup-label";
-					label.textContent = tag;
+						const label = document.createElement("span");
+						label.className = "popup-label";
+						label.textContent = tag;
 
-					const countSpan = document.createElement("span");
-					countSpan.className = "popup-count";
-					countSpan.textContent = isAll ? `(${kaomojis.length})` : `(${counts[tag] || 0})`;
+						const countSpan = document.createElement("span");
+						countSpan.className = "popup-count";
+						countSpan.textContent = isAll
+							? `(${kaomojis.length})`
+							: `(${counts[tag] || 0})`;
 
-					row.appendChild(cb);
-					row.appendChild(label);
-					row.appendChild(countSpan);
+						row.appendChild(cb);
+						row.appendChild(label);
+						row.appendChild(countSpan);
 
-					// click/keyboard toggles
-					function toggle() {
-						if (isAll) {
-							activeFilters.clear();
-						} else {
-							if (activeFilters.has(tag)) activeFilters.delete(tag);
-							else activeFilters.add(tag);
+						// click/keyboard toggles
+						function toggle() {
+							if (isAll) {
+								activeFilters.clear();
+							} else {
+								if (activeFilters.has(tag)) activeFilters.delete(tag);
+								else activeFilters.add(tag);
+							}
+							updateFilters();
+							// re-render rows to update aria-checked and counts
+							renderPopupTags();
 						}
-						updateFilters();
-						// re-render rows to update aria-checked and counts
-						renderPopupTags();
-					}
 
-					row.addEventListener("click", (e) => {
-						// prevent the click from bubbling to document: we re-render the popup synchronously
-						// which may remove the original target from the DOM and cause the global
-						// outside-click handler to close the popup. Stopping propagation here prevents that.
-						e.stopPropagation();
-						toggle();
-					});
-
-					row.addEventListener("keydown", (e) => {
-						if (e.key === " " || e.key === "Enter") {
-							e.preventDefault();
+						row.addEventListener("click", (e) => {
+							// prevent the click from bubbling to document: we re-render the popup synchronously
+							// which may remove the original target from the DOM and cause the global
+							// outside-click handler to close the popup. Stopping propagation here prevents that.
 							e.stopPropagation();
 							toggle();
-						}
-						if (e.key === "Escape") {
-							e.stopPropagation();
-							closePopup();
-						}
-					});
+						});
 
-					popupList.appendChild(row);
+						row.addEventListener("keydown", (e) => {
+							if (e.key === " " || e.key === "Enter") {
+								e.preventDefault();
+								e.stopPropagation();
+								toggle();
+							}
+							if (e.key === "Escape") {
+								e.stopPropagation();
+								// Find which popup this row belongs to and close it
+								const popup = row.closest(".popup-filters");
+								const popupIndex = Array.from(popupFiltersAll).indexOf(popup);
+								if (popupIndex !== -1) {
+									closePopup(popup, btnFilters[popupIndex]);
+								}
+							}
+						});
+
+						popupList.appendChild(row);
+					});
 				});
 			}
 
@@ -579,7 +627,9 @@
 						span.style.marginRight = "6px";
 
 						span.addEventListener("click", () => {
-							activeFilters.has(t) ? activeFilters.delete(t) : activeFilters.add(t);
+							activeFilters.has(t)
+								? activeFilters.delete(t)
+								: activeFilters.add(t);
 							updateFilters();
 						});
 
@@ -648,7 +698,11 @@
 
 						// restarts timeout
 						copyTimeout = setTimeout(() => {
-							copyNotification.classList.remove("show", "notifSuccess", "notifError");
+							copyNotification.classList.remove(
+								"show",
+								"notifSuccess",
+								"notifError"
+							);
 							copyTimeout = null;
 						}, timeout);
 					});
@@ -665,9 +719,60 @@
 			// === KAOMOJI GENERATOR ===
 
 			const options = {
-				extraLeft: ["", "✧", "∘ ∘ ∘", "ꉂ", "?", "''", "Σ>―", "!!!", "Σ", "☆⌒", ".·°՞", "♡ ", ".ﾟ*ꕤ"],
-				armLeft: ["", "ヽ", "◝", "╭", "o", "乁", "q", "୧", "ᕙ", "ദ്ദി", "d", "ヾ", "⸜", "凸", "ʚ"],
-				faceLeft: ["", "(", "((", "(*", "(˶", "(♡", "(´｡", "(´", "(o", "(◍", "૮ ", "૮₍ ", "૮꒰", "ʕ", "(#", "(=", "(⸝⸝ ", "(„", "(〃", "༼ "],
+				extraLeft: [
+					"",
+					"✧",
+					"∘ ∘ ∘",
+					"ꉂ",
+					"?",
+					"''",
+					"Σ>―",
+					"!!!",
+					"Σ",
+					"☆⌒",
+					".·°՞",
+					"♡ ",
+					".ﾟ*ꕤ",
+				],
+				armLeft: [
+					"",
+					"ヽ",
+					"◝",
+					"╭",
+					"o",
+					"乁",
+					"q",
+					"୧",
+					"ᕙ",
+					"ദ്ദി",
+					"d",
+					"ヾ",
+					"⸜",
+					"凸",
+					"ʚ",
+				],
+				faceLeft: [
+					"",
+					"(",
+					"((",
+					"(*",
+					"(˶",
+					"(♡",
+					"(´｡",
+					"(´",
+					"(o",
+					"(◍",
+					"૮ ",
+					"૮₍ ",
+					"૮꒰",
+					"ʕ",
+					"(#",
+					"(=",
+					"(⸝⸝ ",
+					"(„",
+					"(〃",
+					"༼ ",
+				],
 				eyeLeft: [
 					"^",
 					"◠",
@@ -806,9 +911,60 @@
 					"ᓂ",
 					"ට",
 				],
-				faceRight: ["", ")", "))", "*)", "˶)", "♡)", "｡`)", "`)", "o)", "◍)", " ა", " ₎ა", "꒱ა", "ʔ", "#)", "=)", " ⸝⸝)", "„)", "〃)", " ༽"],
-				armRight: ["", "ﾉ", "◜", "╮", "o", "ㄏ", "p", "୨", "ᕗ", "ദ്ദി", "b", "ヾ", "⸝", "凸", "ɞ"],
-				extraRight: ["", "✧", "∘ ∘ ∘", "ꉂ", "?", "''", "♡→", "!!!", "Σ", "⌒☆", "՞°·.", " ♡", "ꕤ*.ﾟ"],
+				faceRight: [
+					"",
+					")",
+					"))",
+					"*)",
+					"˶)",
+					"♡)",
+					"｡`)",
+					"`)",
+					"o)",
+					"◍)",
+					" ა",
+					" ₎ა",
+					"꒱ა",
+					"ʔ",
+					"#)",
+					"=)",
+					" ⸝⸝)",
+					"„)",
+					"〃)",
+					" ༽",
+				],
+				armRight: [
+					"",
+					"ﾉ",
+					"◜",
+					"╮",
+					"o",
+					"ㄏ",
+					"p",
+					"୨",
+					"ᕗ",
+					"ദ്ദി",
+					"b",
+					"ヾ",
+					"⸝",
+					"凸",
+					"ɞ",
+				],
+				extraRight: [
+					"",
+					"✧",
+					"∘ ∘ ∘",
+					"ꉂ",
+					"?",
+					"''",
+					"♡→",
+					"!!!",
+					"Σ",
+					"⌒☆",
+					"՞°·.",
+					" ♡",
+					"ꕤ*.ﾟ",
+				],
 			};
 
 			const inputsContainer = document.getElementById("generator-inputs");
@@ -826,7 +982,7 @@
 				values.forEach((val, index) => {
 					const option = document.createElement("option");
 					option.value = val;
-					option.textContent = index + 1 + ". " + (val || "(empty)"); // number for visualization
+					option.textContent = index + 1 + ". " + (val || "⠀"); // number for visualization
 					select.appendChild(option);
 				});
 
@@ -843,15 +999,17 @@
 			}
 
 			// Observes changes in selects
-			Object.values(parts).forEach((sel) => sel.addEventListener("change", updateKaomoji));
+			Object.values(parts).forEach((sel) =>
+				sel.addEventListener("change", updateKaomoji)
+			);
 
 			// Copy
 			/* btnCopy.addEventListener("click", () => {
-              navigator.clipboard.writeText(preview.textContent).then(() => {
-                btnCopy.textContent = "Copied!";
-                setTimeout(() => (btnCopy.textContent = "Copy Kaomoji"), 2000);
-              });
-            }); */
+			           navigator.clipboard.writeText(preview.textContent).then(() => {
+			             btnCopy.textContent = "Copied!";
+			             setTimeout(() => (btnCopy.textContent = "Copy Kaomoji"), 2000);
+			           });
+			         }); */
 
 			const btnRandom = document.getElementById("generate-random");
 			let slotMachineActive = true;
@@ -915,7 +1073,10 @@
 				const now = audioCtx.currentTime;
 				// quick attack to smooth and avoid clicks, with short decay
 				gain.gain.setValueAtTime(0.0001, now);
-				gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.001);
+				gain.gain.exponentialRampToValueAtTime(
+					Math.max(0.001, volume),
+					now + 0.001
+				);
 				gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
 
 				src.start(now);
@@ -939,8 +1100,14 @@
 				const now = audioCtx.currentTime;
 				// smooth attack and decay for success sound
 				gain.gain.setValueAtTime(0.0001, now);
-				gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.01);
-				gain.gain.exponentialRampToValueAtTime(0.0001, now + copySuccessBuffer.duration);
+				gain.gain.exponentialRampToValueAtTime(
+					Math.max(0.001, volume),
+					now + 0.01
+				);
+				gain.gain.exponentialRampToValueAtTime(
+					0.0001,
+					now + copySuccessBuffer.duration
+				);
 
 				src.start(now);
 				src.stop(now + copySuccessBuffer.duration + 0.02);
@@ -963,8 +1130,14 @@
 				const now = audioCtx.currentTime;
 				// error sound with more abrupt attack
 				gain.gain.setValueAtTime(0.0001, now);
-				gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.005);
-				gain.gain.exponentialRampToValueAtTime(0.0001, now + copyFailBuffer.duration);
+				gain.gain.exponentialRampToValueAtTime(
+					Math.max(0.001, volume),
+					now + 0.005
+				);
+				gain.gain.exponentialRampToValueAtTime(
+					0.0001,
+					now + copyFailBuffer.duration
+				);
 
 				src.start(now);
 				src.stop(now + copyFailBuffer.duration + 0.02);
@@ -1017,7 +1190,9 @@
 				const idxArmLeft = Math.floor(Math.random() * options.armLeft.length);
 				const idxArmRight = Math.floor(Math.random() * options.armRight.length);
 				let idxExtraLeft = Math.floor(Math.random() * options.extraLeft.length);
-				let idxExtraRight = Math.floor(Math.random() * options.extraRight.length);
+				let idxExtraRight = Math.floor(
+					Math.random() * options.extraRight.length
+				);
 
 				// Synchronizes if any is 7 or 11
 				if (idxExtraLeft === 6 || idxExtraRight === 6) {

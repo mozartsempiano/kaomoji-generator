@@ -97,14 +97,23 @@ body {
 	display: flex;
 	flex-direction: column;
 	margin: 0 auto;
-	padding: 31px 34px;
 	border-radius: 7px;
-	background-color: var(--clr-background);
 	/* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4); */
-	background: linear-gradient(var(--clr-background), var(--clr-background)) padding-box,
-		linear-gradient(to bottom, rgba(255, 255, 255, 0.25), var(--clr-background)) border-box;
+	background: linear-gradient(var(--clr-background), var(--clr-background))
+			padding-box,
+		linear-gradient(to bottom, rgba(255, 255, 255, 0.25), var(--clr-background))
+			border-box;
 	border: 1px solid transparent;
-	height: calc(100vh - 10px - 9px - 58px); /* subtrair padding e gap total (nao sei oq é o 58px mas foi necessário) */
+	height: calc(
+		100vh - 10px - 9px - 58px
+	); /* subtrair padding e gap total (nao sei oq é o 58px mas foi necessário) */
+}
+
+#left-col,
+#right-col,
+#left-col-mobile {
+	padding: 31px 34px;
+	background-color: var(--clr-background);
 }
 
 #left-col {
@@ -114,6 +123,10 @@ body {
 	font-size: clamp(0.75rem, 1em, 1em);
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+#left-col-mobile {
+	display: none;
 }
 
 #right-col {
@@ -151,7 +164,24 @@ footer {
 	text-align: center;
 	background-color: var(--clr-background);
 	margin-top: 16px;
-	font-size: 1em;
+	font-size: 0.94em;
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 6px;
+	flex-direction: row;
+	justify-content: center;
+	display: flex;
+	align-content: end;
+}
+
+footer svg,
+footer path {
+	color: inherit;
+	fill: currentColor;
+}
+footer svg {
+	width: 0.94em;
+	height: 0.94em;
 }
 
 a:link,
@@ -177,12 +207,7 @@ a:hover {
 	line-height: 1.2em;
 	margin: 0;
 	font-family: "Mochiy Pop One", "KiwiSoda", var(--fonte);
-	/* gradient text between two main tones */
-	background: radial-gradient(circle at 30% 25%, var(--clr-main-a30-k) 0%, var(--clr-main-a20-k) 100%);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	-webkit-text-fill-color: transparent;
+	color: var(--clr-main-a30-k);
 	font-weight: bold;
 }
 
@@ -215,7 +240,8 @@ div#kaomoji-list div.kaomoji-item div.tags span,
 	color: var(--clr-text);
 	font-size: 1em;
 	font-family: var(--fonte);
-	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+		background 0.2s ease;
 }
 
 div#kaomoji-list div.kaomoji-item div.tags span:hover,
@@ -439,51 +465,109 @@ div#kaomoji-generator div#kaomoji-preview pre {
 	}
 }
 
-@media (max-width: 1240px) {
-	.tilt2 {
-		max-width: 372px;
-		margin: 0;
-		height: auto;
-		object-fit: contain;
+#copy-notification {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background: rgba(50, 50, 50, 0.9);
+	color: var(--clr-text);
+	padding: 10px 16px;
+	border-radius: 6px;
+	font-family: var(--fonte);
+	font-size: 1em;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	transform: translateY(20px);
+	z-index: 1000;
+}
+
+#copy-notification.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+#copy-notification.notifError {
+	background: var(--clr-red-a40);
+	color: var(--clr-white-k);
+}
+
+#copy-notification.notifSuccess {
+	background: var(--clr-green-a30);
+	color: var(--clr-black-a0);
+}
+
+/* Preloader Styles */
+#preloader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--clr-background);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#preloader.hidden {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.loader {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 21px;
+}
+
+.loader-kaomoji {
+	font-size: 2rem;
+	animation: bounce 1.5s ease-in-out infinite;
+	color: var(--clr-text);
+}
+
+.loader-text {
+	color: var(--clr-text);
+	font-family: var(--fonte);
+	font-size: 1rem;
+	opacity: 0.8;
+}
+
+.loader-spinner {
+	width: 32px;
+	height: 32px;
+	border: 3px solid var(--clr-gray-k);
+	border-top: 3px solid var(--clr-text);
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0);
+	}
+	40% {
+		transform: translateY(-10px);
+	}
+	60% {
+		transform: translateY(-5px);
 	}
 }
 
-@media (max-width: 1024px) {
-	#container-kaomoji {
-		flex-direction: column;
-		height: auto;
-		overflow: visible;
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
 	}
-
-	#content {
-		flex-direction: column;
-	}
-
-	#left-col,
-	#right-col {
-		padding: 24px 24px;
-		max-width: 100%;
-		width: 100%;
-		height: auto !important;
-		flex: unset;
-		overflow: visible !important;
-	}
-
-	#right-col {
-		overflow-y: auto;
-		overflow-x: auto;
-		max-height: unset;
-	}
-
-	#filters {
-		margin-bottom: 0;
-	}
-
-	.tilt2 {
-		max-width: 316px;
-		margin: 0 auto;
-		margin-top: -8px;
-		margin-bottom: 10px;
+	100% {
+		transform: rotate(360deg);
 	}
 }
 
@@ -569,7 +653,8 @@ div#kaomoji-generator div#kaomoji-preview button {
 	border: none;
 	cursor: pointer;
 	box-shadow: inset 0 1px rgba(255, 255, 255, 0.2);
-	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+		filter 0.2s ease;
 	line-height: 16px;
 	width: auto;
 	font-family: var(--fonte);
@@ -578,4 +663,155 @@ div#kaomoji-generator div#kaomoji-preview button {
 
 div#kaomoji-generator div#kaomoji-preview button:hover {
 	filter: brightness(0.8);
+}
+
+/* ============================== */
+/* Responsive Design */
+/* ============================== */
+
+@media (max-width: 1240px) {
+	.tilt2 {
+		max-width: 372px;
+		margin: 0;
+		height: auto;
+		object-fit: contain;
+	}
+}
+
+@media (max-width: 1024px) {
+	#container-kaomoji {
+		flex-direction: column;
+		height: auto;
+		overflow: visible;
+	}
+
+	#content {
+		flex-direction: column;
+		padding: 0;
+	}
+
+	#content,
+	#container-kaomoji {
+		gap: 3px;
+	}
+
+	#left-col,
+	#right-col,
+	#left-col-mobile {
+		padding: 24px 24px;
+		max-width: 100%;
+		width: 100%;
+		height: auto !important;
+		flex: unset;
+		overflow: visible !important;
+		border: 0;
+	}
+
+	#right-col {
+		overflow-y: auto;
+		overflow-x: auto;
+		max-height: unset;
+	}
+
+	#left-col {
+		display: none;
+	}
+
+	#left-col-mobile {
+		display: block;
+	}
+
+	#left-col-mobile h1 {
+		font-size: clamp(1.2em, 1.7em, 1.8em); /* minimum, ideal, maximum */
+		text-align: left;
+		margin-bottom: 8px;
+	}
+
+	#left-col-mobile #filters {
+		display: flex;
+		flex-wrap: nowrap;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+	}
+
+	#left-col-mobile #btn-filter {
+		flex: 1;
+	}
+
+	#left-col-mobile #btn-clear {
+		width: fit-content;
+		flex-shrink: 0;
+		padding: 0;
+		margin: 0;
+	}
+
+	#left-col-mobile #btn-clear:enabled {
+		cursor: pointer;
+		color: var(--clr-main-a30-k);
+		background: transparent;
+	}
+
+	#left-col-mobile #btn-clear svg {
+		fill: currentColor;
+		width: 40px;
+		height: 40px;
+	}
+
+	footer {
+		margin-top: 0;
+		font-size: 0.9em;
+	}
+
+	#filters {
+		margin-bottom: 0;
+	}
+
+	.tilt2 {
+		max-width: 316px;
+		margin: 0 auto;
+		margin-top: -8px;
+		margin-bottom: 10px;
+	}
+
+	pre {
+		font-size: 1.25em;
+		min-height: 42px;
+	}
+
+	#kaomoji-list {
+		justify-content: center;
+		gap: 8px;
+	}
+
+	div#kaomoji-list div.kaomoji-item div.tags span,
+	#filters button:not(#btn-filter):not(#btn-clear) {
+		font-size: 0.9em;
+		padding: 4px 6px;
+	}
+
+	#kaomoji-generator h2 {
+		margin-bottom: 24px;
+		font-size: 1.4em;
+	}
+
+	#generator-inputs {
+		flex-wrap: nowrap;
+		gap: 4px;
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+		justify-content: flex-start;
+	}
+
+	#generator-inputs::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
+	}
+
+	#generator-inputs select {
+		font-size: 1.3em;
+		padding: 7px 8px;
+	}
 }
