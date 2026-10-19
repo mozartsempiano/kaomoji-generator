@@ -1,0 +1,78 @@
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build and Distribution
+dist/
+build/
+out/
+.cache/
+.parcel-cache/
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Temporary Files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Backup Files
+*.bak
+*.backup
+*.old
+
+# Compressed Files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# System and Hidden Files
+.htaccess
+.htpasswd
+
+# Testing
+coverage/
+.nyc_output/
+
+# Documentation
+docs/_build/
+
+# Miscellaneous
+*.orig
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
